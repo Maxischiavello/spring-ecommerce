@@ -1,7 +1,14 @@
 package com.ecommerce.springecommerce.model;
 
-public class User {
+import jakarta.persistence.*;
 
+import java.util.List;
+
+@Entity
+@Table(name = "users")
+public class User {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String name;
     private String username;
@@ -9,12 +16,16 @@ public class User {
     private String email;
     private String address;
     private String phoneNumber;
-    private String tipo;
+    private String type;
+    @OneToMany(mappedBy = "user")
+    private List<Product> products;
+    @OneToMany(mappedBy = "user")
+    private List<Order> orders;
 
     public User() {
     }
 
-    public User(Integer id, String name, String username, String password, String email, String address, String phoneNumber, String tipo) {
+    public User(Integer id, String name, String username, String password, String email, String address, String phoneNumber, String type) {
         this.id = id;
         this.name = name;
         this.username = username;
@@ -22,7 +33,7 @@ public class User {
         this.email = email;
         this.address = address;
         this.phoneNumber = phoneNumber;
-        this.tipo = tipo;
+        this.type = type;
     }
 
     public Integer getId() {
@@ -81,12 +92,20 @@ public class User {
         this.phoneNumber = phoneNumber;
     }
 
-    public String getTipo() {
-        return tipo;
+    public String getType() {
+        return type;
     }
 
-    public void setTipo(String tipo) {
-        this.tipo = tipo;
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public List<Product> getProducts() {
+        return products;
+    }
+
+    public void setProducts(List<Product> products) {
+        this.products = products;
     }
 
     @Override
@@ -99,7 +118,7 @@ public class User {
                 ", email='" + email + '\'' +
                 ", address='" + address + '\'' +
                 ", phoneNumber='" + phoneNumber + '\'' +
-                ", tipo='" + tipo + '\'' +
+                ", type='" + type + '\'' +
                 '}';
     }
 }
