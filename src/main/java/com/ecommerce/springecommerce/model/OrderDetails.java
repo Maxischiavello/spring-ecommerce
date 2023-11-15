@@ -14,7 +14,7 @@ public class OrderDetails {
     private double total;
     @OneToOne
     private Order order;
-    @OneToOne
+    @ManyToOne
     private Product product;
 
     public OrderDetails() {
