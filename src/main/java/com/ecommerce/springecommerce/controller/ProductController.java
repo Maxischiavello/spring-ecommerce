@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.ui.Model;
 
 @Controller
 @RequestMapping("/products")
@@ -18,12 +19,13 @@ public class ProductController {
     private ProductService productService;
 
     @GetMapping("")
-    public String showProducts() {
+    public String showProducts(Model model) {
+        model.addAttribute("products", productService.findAll());
         return "products/show";
     }
 
     @GetMapping("/create")
-    public String creatProduct() {
+    public String createProduct() {
         return "products/create";
     }
 
