@@ -14,7 +14,7 @@ public class UploadFileService {
     private final String FOLDER = "images//";
 
     public String saveImage(MultipartFile file) throws IOException {
-        if(!file.isEmpty()) {
+        if (!file.isEmpty()) {
             byte[] bytes = file.getBytes();
             Path path = Paths.get(FOLDER + file.getOriginalFilename());
             Files.write(path, bytes);
