@@ -1,5 +1,7 @@
 package com.ecommerce.springecommerce.controller;
 
+import com.ecommerce.springecommerce.model.Order;
+import com.ecommerce.springecommerce.model.OrderDetails;
 import com.ecommerce.springecommerce.model.Product;
 import com.ecommerce.springecommerce.service.ProductService;
 import org.slf4j.Logger;
@@ -7,11 +9,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -22,6 +23,9 @@ public class HomeController {
 
     @Autowired
     private ProductService productService;
+
+    private List<OrderDetails> orderDetailsList = new ArrayList<OrderDetails>();
+    Order order = new Order();
 
     @GetMapping("")
     public String home(Model model) {
@@ -40,7 +44,29 @@ public class HomeController {
     }
 
     @PostMapping("/cart")
-    public String addCart() {
+    public String addCart(@RequestParam Integer id, @RequestParam Integer amount, Model model) {
+        OrderDetails orderDetails = new OrderDetails();
+        Product product = new Product();
+        double total = 0;
+
+        Optional<Product> optionalProduct = productService.getProduct(id);
+        LOGGER.info("Product added to cart: {}", optionalProduct.get());
+        LOGGER.info("Amount: {}", amount);
+        product = optionalProduct.get();
+
+        orderDetails.setAmount(amount);
+        orderDetails.setPrice(product.getPrice());
+        orderDetails.setName(product.getName());
+        orderDetails.setTotal(product.getPrice() * amount);
+
+        orderDetailsList.add(orderDetails);
+
+        total = orderDetailsList.stream().mapToDouble(OrderDetails::getTotal).sum();
+        order.setTotal(total);
+
+        model.addAttribute("cart", orderDetailsList);
+        model.addAttribute("order", order);
+
         return "/user/cart";
     }
 }
