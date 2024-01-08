@@ -53,12 +53,12 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr th:each="oDetails:${cart}">
-                            <td th:text="${oDetails.name}"></td>
-                            <td th:text="${oDetails.price}"></td>
-                            <td th:text="${oDetails.amount}"></td>
-                            <td th:text="${oDetails.total}"></td>
-                            <td><a href="#" class="btn btn-danger">Quitar</a></td>
+                        <tr th:each="orderDetails:${cart}">
+                            <td th:text="${orderDetails.name}"></td>
+                            <td th:text="${orderDetails.price}"></td>
+                            <td th:text="${orderDetails.amount}"></td>
+                            <td th:text="${orderDetails.total}"></td>
+                            <td><a th:href="@{/delete/cart/{id} (id=${orderDetails.product.id})}" class="btn btn-danger">Quitar</a></td>
                         </tr>
                         </tbody>
                     </table>

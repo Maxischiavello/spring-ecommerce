@@ -58,14 +58,37 @@ public class HomeController {
         orderDetails.setPrice(product.getPrice());
         orderDetails.setName(product.getName());
         orderDetails.setTotal(product.getPrice() * amount);
+        orderDetails.setProduct(product);
 
         orderDetailsList.add(orderDetails);
 
         total = orderDetailsList.stream().mapToDouble(OrderDetails::getTotal).sum();
         order.setTotal(total);
+        model.addAttribute("cart", orderDetailsList);
+        model.addAttribute("order", order);
+
+        return "/user/cart";
+    }
+
+    @GetMapping("/delete/cart/{id}")
+    public String deleteProductFromCart(@PathVariable Integer id, Model model) {
+        List<OrderDetails> newOrderDetails = new ArrayList<>();
+
+        for(OrderDetails od : orderDetailsList) {
+            if(od.getProduct().getId() != id) {
+                newOrderDetails.add(od);
+            }
+        }
+
+        orderDetailsList = newOrderDetails;
+
+        double total = 0;
+        total = orderDetailsList.stream().mapToDouble(OrderDetails::getTotal).sum();
+        order.setTotal(total);
 
         model.addAttribute("cart", orderDetailsList);
         model.addAttribute("order", order);
+
 
         return "/user/cart";
     }
