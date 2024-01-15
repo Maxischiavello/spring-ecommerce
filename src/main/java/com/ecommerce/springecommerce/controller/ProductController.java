@@ -5,7 +5,7 @@ import java.util.Optional;
 
 import com.ecommerce.springecommerce.model.Product;
 import com.ecommerce.springecommerce.model.User;
-import com.ecommerce.springecommerce.service.ProductService;
+import com.ecommerce.springecommerce.service.IProductService;
 import com.ecommerce.springecommerce.service.UploadFileService;
 import org.slf4j.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +21,7 @@ public class ProductController {
     @Autowired
     private UploadFileService uploadFileService;
     @Autowired
-    private ProductService productService;
+    private IProductService productService;
 
     @GetMapping("")
     public String showProducts(Model model) {

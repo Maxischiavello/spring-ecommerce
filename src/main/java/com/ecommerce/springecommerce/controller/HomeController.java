@@ -3,7 +3,9 @@ package com.ecommerce.springecommerce.controller;
 import com.ecommerce.springecommerce.model.Order;
 import com.ecommerce.springecommerce.model.OrderDetails;
 import com.ecommerce.springecommerce.model.Product;
-import com.ecommerce.springecommerce.service.ProductService;
+import com.ecommerce.springecommerce.model.User;
+import com.ecommerce.springecommerce.service.IProductService;
+import com.ecommerce.springecommerce.service.IUserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +24,10 @@ public class HomeController {
     private final Logger LOGGER = LoggerFactory.getLogger(HomeController.class);
 
     @Autowired
-    private ProductService productService;
+    private IProductService productService;
+
+    @Autowired
+    private IUserService userService;
 
     private List<OrderDetails> orderDetailsList = new ArrayList<OrderDetails>();
     Order order = new Order();
@@ -107,7 +112,13 @@ public class HomeController {
     }
 
     @GetMapping("/order")
-    public String order() {
+    public String order(Model model) {
+        User user = userService.findById(1).get();
+
+        model.addAttribute("cart", orderDetailsList);
+        model.addAttribute("order", order);
+        model.addAttribute("user", user);
+
         return "user/order_details";
     }
 }

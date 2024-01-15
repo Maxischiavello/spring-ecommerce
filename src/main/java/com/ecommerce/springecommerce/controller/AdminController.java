@@ -1,7 +1,7 @@
 package com.ecommerce.springecommerce.controller;
 
 import com.ecommerce.springecommerce.model.Product;
-import com.ecommerce.springecommerce.service.ProductService;
+import com.ecommerce.springecommerce.service.IProductService;
 import org.slf4j.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,7 +16,7 @@ import java.util.List;
 public class AdminController {
 
     @Autowired
-    private ProductService productService;
+    private IProductService productService;
 
     private Logger logger= LoggerFactory.getLogger(AdminController.class);
 
