@@ -4,6 +4,8 @@ import com.ecommerce.springecommerce.model.Order;
 import com.ecommerce.springecommerce.model.OrderDetails;
 import com.ecommerce.springecommerce.model.Product;
 import com.ecommerce.springecommerce.model.User;
+import com.ecommerce.springecommerce.service.IOrderDetailsService;
+import com.ecommerce.springecommerce.service.IOrderService;
 import com.ecommerce.springecommerce.service.IProductService;
 import com.ecommerce.springecommerce.service.IUserService;
 import org.slf4j.Logger;
@@ -14,6 +16,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,7 +32,14 @@ public class HomeController {
     @Autowired
     private IUserService userService;
 
-    private List<OrderDetails> orderDetailsList = new ArrayList<OrderDetails>();
+    @Autowired
+    private IOrderService orderService;
+
+    @Autowired
+    private IOrderDetailsService orderDetailsService;
+
+    List<OrderDetails> orderDetailsList = new ArrayList<OrderDetails>();
+
     Order order = new Order();
 
     @GetMapping("")
@@ -85,8 +95,8 @@ public class HomeController {
     public String deleteProductFromCart(@PathVariable Integer id, Model model) {
         List<OrderDetails> newOrderDetails = new ArrayList<>();
 
-        for(OrderDetails od : orderDetailsList) {
-            if(od.getProduct().getId() != id) {
+        for (OrderDetails od : orderDetailsList) {
+            if (od.getProduct().getId() != id) {
                 newOrderDetails.add(od);
             }
         }
@@ -120,5 +130,25 @@ public class HomeController {
         model.addAttribute("user", user);
 
         return "user/order_details";
+    }
+
+    @GetMapping("/save_order")
+    public String saveOrder() {
+        Date creationDate = new Date();
+        order.setCreationDate(creationDate);
+        order.setNumber(orderService.generateOrderNumber());
+        User user = userService.findById(1).get();
+        order.setUser(user);
+        orderService.save(order);
+
+        for (OrderDetails od : orderDetailsList) {
+            od.setOrder(order);
+            orderDetailsService.save(od);
+        }
+
+        order = new Order();
+        orderDetailsList.clear();
+
+        return "redirect:/";
     }
 }

@@ -24,11 +24,15 @@ public class OrderServiceImp implements IOrderService {
         return orderRepository.save(order);
     }
 
+    @Override
     public String generateOrderNumber() {
         int number = 0;
         String orderNumber = "";
-        List<Order> orders = this.findAll();
-        List<Integer> numbers = new ArrayList<>();
+
+        List<Order> orders = findAll();
+
+        List<Integer> numbers = new ArrayList<Integer>();
+
         orders.stream().forEach(o -> numbers.add(Integer.parseInt(o.getNumber())));
 
         if (orders.isEmpty()) {
@@ -38,12 +42,14 @@ public class OrderServiceImp implements IOrderService {
             number++;
         }
 
-        if (number < 10) {
+        if (number < 10) { //0000001000
             orderNumber = "000000000" + String.valueOf(number);
         } else if (number < 100) {
             orderNumber = "00000000" + String.valueOf(number);
         } else if (number < 1000) {
             orderNumber = "0000000" + String.valueOf(number);
+        } else if (number < 10000) {
+            orderNumber = "000000" + String.valueOf(number);
         }
 
         return orderNumber;
