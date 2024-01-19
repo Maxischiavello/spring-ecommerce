@@ -151,4 +151,14 @@ public class HomeController {
 
         return "redirect:/";
     }
+
+    @PostMapping("/search")
+    public String searchProduct(@RequestParam String productName, Model model) {
+        LOGGER.info("Searched product: {}", productName);
+        List<Product> products = productService.findAll().stream()
+                .filter(p -> p.getName().contains(productName)).toList();
+
+        model.addAttribute("products", products);
+        return "user/home";
+    }
 }
