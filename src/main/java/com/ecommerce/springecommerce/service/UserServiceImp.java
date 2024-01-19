@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 @Service
-public class UserServiceImp implements IUserService{
+public class UserServiceImp implements IUserService {
 
     @Autowired
     private IUserRepository userRepository;
@@ -16,5 +16,10 @@ public class UserServiceImp implements IUserService{
     @Override
     public Optional<User> findById(Integer id) {
         return userRepository.findById(id);
+    }
+
+    @Override
+    public User save(User user) {
+        return userRepository.save(user);
     }
 }
