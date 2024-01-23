@@ -32,4 +32,9 @@ public class UserController {
         userService.save(user);
         return "redirect:/";
     }
+
+    @GetMapping("/login")
+    public String login() {
+        return "user/login";
+    }
 }
