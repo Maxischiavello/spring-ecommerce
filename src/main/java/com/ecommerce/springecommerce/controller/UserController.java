@@ -2,6 +2,7 @@ package com.ecommerce.springecommerce.controller;
 
 import com.ecommerce.springecommerce.model.User;
 import com.ecommerce.springecommerce.service.IUserService;
+import jakarta.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/user")
@@ -36,5 +39,22 @@ public class UserController {
     @GetMapping("/login")
     public String login() {
         return "user/login";
+    }
+
+    @PostMapping("/login")
+    public String login(User user, HttpSession session) {
+        Optional<User> loggedInUser = userService.findByEmail(user.getEmail());
+        //LOGGER.info("Logged in user: {}", loggedInUser.get());
+
+        if (loggedInUser.isPresent()) {
+            session.setAttribute("userId", loggedInUser.get().getId());
+            if (loggedInUser.get().getType().equals("ADMIN")) {
+                return "redirect:/admin";
+            }
+        } else {
+            LOGGER.error("User not found");
+        }
+
+        return "redirect:/";
     }
 }
