@@ -12,7 +12,7 @@ public class OrderDetails {
     private double amount;
     private double price;
     private double total;
-    @OneToOne
+    @ManyToOne
     private Order order;
     @ManyToOne
     private Product product;

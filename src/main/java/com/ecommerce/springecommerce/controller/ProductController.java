@@ -6,7 +6,10 @@ import java.util.Optional;
 import com.ecommerce.springecommerce.model.Product;
 import com.ecommerce.springecommerce.model.User;
 import com.ecommerce.springecommerce.service.IProductService;
+import com.ecommerce.springecommerce.service.IUserService;
 import com.ecommerce.springecommerce.service.UploadFileService;
+import com.ecommerce.springecommerce.service.UserServiceImp;
+import jakarta.servlet.http.HttpSession;
 import org.slf4j.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -23,6 +26,9 @@ public class ProductController {
     @Autowired
     private IProductService productService;
 
+    @Autowired
+    private IUserService userService;
+
     @GetMapping("")
     public String showProducts(Model model) {
         model.addAttribute("products", productService.findAll());
@@ -35,9 +41,9 @@ public class ProductController {
     }
 
     @PostMapping("/save")
-    public String saveProduct(Product product, @RequestParam("img") MultipartFile file) throws IOException {
+    public String saveProduct(Product product, @RequestParam("img") MultipartFile file, HttpSession session) throws IOException {
         LOGGER.info("Product object {}", product);
-        User user = new User(1, "", "", "", "", "", "", "");
+        User user = userService.findById(Integer.parseInt(session.getAttribute("userId").toString())).get();
         product.setUser(user);
 
         // image upload
