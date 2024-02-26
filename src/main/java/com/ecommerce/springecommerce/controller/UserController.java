@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -50,7 +51,6 @@ public class UserController {
     @PostMapping("/login")
     public String login(User user, HttpSession session) {
         Optional<User> loggedInUser = userService.findByEmail(user.getEmail());
-        //LOGGER.info("Logged in user: {}", loggedInUser.get());
 
         if (loggedInUser.isPresent()) {
             session.setAttribute("userId", loggedInUser.get().getId());
@@ -64,12 +64,22 @@ public class UserController {
         return "redirect:/";
     }
 
-    @GetMapping("/shop")
-    public String shop(Model model, HttpSession session) {
+    @GetMapping("/purchases")
+    public String purchases(Model model, HttpSession session) {
         model.addAttribute("session", session.getAttribute("userId"));
         User user = userService.findById(Integer.parseInt(session.getAttribute("userId").toString())).get();
         List<Order> orders = orderService.findByUser(user);
+        LOGGER.info("Orders: {}", orders);
         model.addAttribute("orders", orders);
-        return "user/shop";
+        return "user/purchases";
+    }
+
+    @GetMapping("/purchase_details/{id}")
+    public String purchaseDetails(@PathVariable Integer id, HttpSession session, Model model) {
+        model.addAttribute("session", session.getAttribute("userId"));
+        LOGGER.info("Order ID: {}", id);
+        Optional<Order> order = orderService.findById(id);
+        model.addAttribute("purchase_details", order.get().getOrderDetails());
+        return "user/purchase_details";
     }
 }
