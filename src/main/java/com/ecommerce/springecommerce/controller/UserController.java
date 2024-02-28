@@ -82,4 +82,11 @@ public class UserController {
         model.addAttribute("purchase_details", order.get().getOrderDetails());
         return "user/purchase_details";
     }
+
+    @GetMapping("/logout")
+    public String logout(HttpSession session) {
+        session.removeAttribute("userId");
+        LOGGER.info("Session userId: {}", session.getAttribute("userId"));
+        return "redirect:/";
+    }
 }

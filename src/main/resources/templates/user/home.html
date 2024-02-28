@@ -21,10 +21,15 @@
 
 <body>
 
-<!-- Navigation -->
-<div th:insert="~{user/template_user.html::header}" th:if="${session==null}"></div>
+<!--&lt;!&ndash; Navigation &ndash;&gt;-->
+<!--<div th:insert="~{user/template_user.html::header}" th:if="${session==null}"></div>-->
+<!--<div th:insert="~{user/template_user.html::header-user}" th:unless="${session==null}"></div>-->
 
-<div th:insert="~{user/template_user.html::header-user}" th:unless="${session==null}"></div>
+<div
+        th:replace="${session == null} ?
+        ~{user/template_user.html::header} :
+        ~{user/template_user.html::header-user}">
+</div>
 
 <!-- Page Content -->
 <div class="container">

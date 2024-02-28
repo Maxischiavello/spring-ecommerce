@@ -27,30 +27,28 @@
         <div class="container">
             <a class="navbar-brand" th:href="@{/}">Spring eCommerce</a>
 
-            <form class="form-inline my-2 my-lg-0" method="post"
-                  th:action="@{/search}">
+            <form class="form-inline my-2 my-lg-0" method="post" th:action="@{/search}">
                 <input class="form-control mr-sm-2" type="search"
-                       placeholder="Buscar" aria-label="Search" name="productName"
+                       placeholder="Buscar" aria-label="Search" name="nombre"
                        autocomplete="off">
                 <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Buscar</button>
             </form>
 
 
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
-                    aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+            <button class="navbar-toggler" type="button" data-toggle="collapse"
+                    data-target="#navbarResponsive" aria-controls="navbarResponsive"
+                    aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <!--suppress XmlDuplicatedId -->
             <div class="collapse navbar-collapse" id="navbarResponsive">
                 <ul class="navbar-nav ml-auto">
-                    <li class="nav-item"><a class="nav-link"
-                                            th:href="@{/get_cart}">Carrito</a></li>
-                    <li class="nav-item"><a class="nav-link"
-                                            th:href="@{/user/login}">Login</a></li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/getCart}">Carrito</a></li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/user/login}">Login</a></li>
                 </ul>
             </div>
         </div>
     </nav>
+
 </div>
 
 <!-- Navigation -->
@@ -72,7 +70,6 @@
                     aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <!--suppress XmlDuplicatedId -->
             <div class="collapse navbar-collapse" id="navbarResponsive">
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item dropdown"><a
@@ -83,6 +80,7 @@
                              aria-labelledby="navbarDropdownMenuLink">
                             <a class="dropdown-item" th:href="@{/user/purchases}">Compras</a>
                             <a class="dropdown-item" th:href="@{/get_cart}">Carrito</a>
+                            <a class="dropdown-item" th:href="@{/user/logout}">Cerrar sesión</a>
                         </div>
                     </li>
                 </ul>
@@ -90,6 +88,7 @@
         </div>
     </nav>
 </div>
+
 
 <!-- Footer -->
 <div th:fragment="footer">
