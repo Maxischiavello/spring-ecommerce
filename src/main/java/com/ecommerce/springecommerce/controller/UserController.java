@@ -55,6 +55,7 @@ public class UserController {
         if (loggedInUser.isPresent()) {
             session.setAttribute("userId", loggedInUser.get().getId());
             if (loggedInUser.get().getType().equals("ADMIN")) {
+                LOGGER.info("User type: {}", loggedInUser.get().getType());
                 return "redirect:/admin";
             }
         } else {
