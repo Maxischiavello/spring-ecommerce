@@ -1,7 +1,9 @@
 package com.ecommerce.springecommerce.controller;
 
+import com.ecommerce.springecommerce.model.Order;
 import com.ecommerce.springecommerce.model.Product;
 import com.ecommerce.springecommerce.model.User;
+import com.ecommerce.springecommerce.service.IOrderService;
 import com.ecommerce.springecommerce.service.IProductService;
 import com.ecommerce.springecommerce.service.IUserService;
 import org.slf4j.*;
@@ -23,14 +25,17 @@ public class AdminController {
     @Autowired
     private IProductService productService;
 
-    private Logger logger = LoggerFactory.getLogger(AdminController.class);
+    @Autowired
+    private IOrderService orderService;
+
+    private final Logger LOGGER = LoggerFactory.getLogger(AdminController.class);
 
 
     @GetMapping("")
     public String home(Model model) {
         List<Product> products = productService.findAll();
         model.addAttribute("products", products);
-        logger.info("Products: {}", products);
+        LOGGER.info("Products: {}", products);
         return "admin/home";
     }
 
@@ -38,7 +43,15 @@ public class AdminController {
     public String users(Model model) {
         List<User> users = userService.findAll();
         model.addAttribute("users", users);
-        logger.info("Users: {}", users);
+        LOGGER.info("Users: {}", users);
         return "/admin/users";
+    }
+
+    @GetMapping("/orders")
+    public String orders(Model model) {
+        List<Order> orders = orderService.findAll();
+        model.addAttribute("orders", orders);
+        LOGGER.info("Orders: {}", orders);
+        return "admin/orders";
     }
 }

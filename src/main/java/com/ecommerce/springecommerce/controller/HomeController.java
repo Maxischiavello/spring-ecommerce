@@ -48,6 +48,16 @@ public class HomeController {
         LOGGER.info("User ID from session: {}", session.getAttribute("userId"));
         model.addAttribute("products", productService.findAll());
         model.addAttribute("session", session.getAttribute("userId"));
+
+        try {
+            User user = userService.findById(Integer.parseInt(session.getAttribute("userId").toString())).get();
+            if(user.getType().equals("ADMIN")) {
+                return "/admin/home";
+            }
+        } catch(Exception e) {
+            LOGGER.error(e.getMessage());
+        }
+
         return "user/home";
     }
 
