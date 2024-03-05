@@ -30,12 +30,13 @@
 
     <!-- Page Heading/Breadcrumbs -->
     <h1 class="mt-4 mb-3">
-        Spring eCommerce <small>Ordenes</small>
+        Spring eCommerce <small>Detalles</small>
     </h1>
 
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a th:href="@{/}">Home</a></li>
-        <li class="breadcrumb-item active">Ordenes</li>
+        <li class="breadcrumb-item"><a th:href="@{/admin/orders}">Ordenes</a></li>
+        <li class="breadcrumb-item active">Detalle de orden</li>
     </ol>
 
     <!-- Blog Post -->
@@ -46,18 +47,18 @@
                     <table class="table">
                         <thead>
                         <tr>
-                            <th scope="col">No. de Orden</th>
-                            <th scope="col">Fecha</th>
-                            <th scope="col">Valor</th>
-                            <th scope="col">Acción</th>
+                            <th scope="col">Cantidad</th>
+                            <th scope="col">Producto</th>
+                            <th scope="col">Precio</th>
+                            <th scope="col">Total</th>
                         </tr>
                         </thead>
                         <tbody>
-                        <tr th:each="order:${orders}">
-                            <td th:text="${order.number}"></td>
-                            <td th:text="${order.creationDate}"></td>
-                            <td th:text="${order.total}"></td>
-                            <td><a th:href="@{/admin/order_details/{id} (id= ${order.id})}" class="btn btn-success">Ver Detalle</a></td>
+                        <tr th:each="od:${order_details}">
+                            <td th:text="${od.amount}"></td>
+                            <td th:text="${od.name}"></td>
+                            <td th:text="${od.price}"></td>
+                            <td th:text="${od.total}"></td>
                         </tr>
                         </tbody>
                     </table>
@@ -78,3 +79,4 @@
 </body>
 
 </html>
+
