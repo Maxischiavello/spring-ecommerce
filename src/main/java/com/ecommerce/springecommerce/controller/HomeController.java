@@ -8,7 +8,7 @@ import com.ecommerce.springecommerce.service.IOrderDetailsService;
 import com.ecommerce.springecommerce.service.IOrderService;
 import com.ecommerce.springecommerce.service.IProductService;
 import com.ecommerce.springecommerce.service.IUserService;
-import jakarta.servlet.http.HttpSession;
+import javax.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,17 +45,17 @@ public class HomeController {
 
     @GetMapping("")
     public String home(Model model, HttpSession session) {
-        LOGGER.info("User ID from session: {}", session.getAttribute("userId"));
         model.addAttribute("products", productService.findAll());
         model.addAttribute("session", session.getAttribute("userId"));
 
         try {
+            LOGGER.info("User ID from session: {}", session.getAttribute("userId"));
             User user = userService.findById(Integer.parseInt(session.getAttribute("userId").toString())).get();
             if(user.getType().equals("ADMIN")) {
                 return "/admin/home";
             }
         } catch(Exception e) {
-            LOGGER.error(e.getMessage());
+            LOGGER.info("User ID is null");
         }
 
         return "user/home";
@@ -72,7 +72,11 @@ public class HomeController {
     }
 
     @PostMapping("/cart")
-    public String addCart(@RequestParam Integer id, @RequestParam Integer amount, Model model) {
+    public String addCart(@RequestParam Integer id, @RequestParam Integer amount, Model model, HttpSession session) {
+        if(session.getAttribute("userId")==null) {
+            return "redirect:/user/login";
+        }
+
         OrderDetails orderDetails = new OrderDetails();
         Product product = new Product();
         double total = 0;
@@ -129,6 +133,9 @@ public class HomeController {
 
     @GetMapping("/get_cart")
     public String getCart(Model model, HttpSession session) {
+        if(session.getAttribute("userId")==null) {
+            return "redirect:/user/login";
+        }
         model.addAttribute("cart", orderDetailsList);
         model.addAttribute("order", order);
         model.addAttribute("session", session.getAttribute("userId"));

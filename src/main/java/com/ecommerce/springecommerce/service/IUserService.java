@@ -1,8 +1,6 @@
 package com.ecommerce.springecommerce.service;
 
 import com.ecommerce.springecommerce.model.User;
-
-import javax.swing.text.html.Option;
 import java.util.List;
 import java.util.Optional;
 

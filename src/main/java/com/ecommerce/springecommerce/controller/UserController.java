@@ -4,10 +4,11 @@ import com.ecommerce.springecommerce.model.Order;
 import com.ecommerce.springecommerce.model.User;
 import com.ecommerce.springecommerce.service.IOrderService;
 import com.ecommerce.springecommerce.service.IUserService;
-import jakarta.servlet.http.HttpSession;
+import javax.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,6 +31,8 @@ public class UserController {
     @Autowired
     private IOrderService orderService;
 
+    BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+
     @GetMapping("/register")
     public String register() {
         return "user/register";
@@ -39,18 +42,19 @@ public class UserController {
     public String register(User user) {
         LOGGER.info("Registered user: {}", user);
         user.setType("USER");
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         userService.save(user);
         return "redirect:/";
     }
 
-    @GetMapping("/login")
+    @GetMapping("/login_form")
     public String login() {
         return "user/login";
     }
 
-    @PostMapping("/login")
+    @GetMapping("/login")
     public String login(User user, HttpSession session) {
-        Optional<User> loggedInUser = userService.findByEmail(user.getEmail());
+        Optional<User> loggedInUser = userService.findById(Integer.parseInt(session.getAttribute("userId").toString()));
 
         if (loggedInUser.isPresent()) {
             session.setAttribute("userId", loggedInUser.get().getId());

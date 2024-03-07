@@ -1,7 +1,6 @@
 package com.ecommerce.springecommerce.controller;
 
 import com.ecommerce.springecommerce.model.Order;
-import com.ecommerce.springecommerce.model.OrderDetails;
 import com.ecommerce.springecommerce.model.Product;
 import com.ecommerce.springecommerce.model.User;
 import com.ecommerce.springecommerce.service.IOrderDetailsService;
