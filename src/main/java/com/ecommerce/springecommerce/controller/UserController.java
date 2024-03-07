@@ -41,6 +41,7 @@ public class UserController {
     @PostMapping("/save")
     public String register(User user) {
         LOGGER.info("Registered user: {}", user);
+        user.setUsername(user.getEmail());
         user.setType("USER");
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userService.save(user);
@@ -48,13 +49,14 @@ public class UserController {
     }
 
     @GetMapping("/login_form")
-    public String login() {
+    public String loginForm() {
         return "user/login";
     }
 
     @GetMapping("/login")
     public String login(User user, HttpSession session) {
-        Optional<User> loggedInUser = userService.findById(Integer.parseInt(session.getAttribute("userId").toString()));
+        Optional<User> loggedInUser;
+        loggedInUser = userService.findById(Integer.parseInt(session.getAttribute("userId").toString()));
 
         if (loggedInUser.isPresent()) {
             session.setAttribute("userId", loggedInUser.get().getId());

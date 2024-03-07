@@ -28,10 +28,10 @@ public class UserDetailsServiceImp implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        LOGGER.info("Username: ");
         Optional<User> optionalUser = userService.findByEmail(username);
         if (optionalUser.isPresent()) {
             LOGGER.info("User ID: {}", optionalUser.get().getId());
+            LOGGER.info("Username: {}", optionalUser.get().getUsername());
             session.setAttribute("userId", optionalUser.get().getId());
             User user = optionalUser.get();
             return org.springframework.security.core.userdetails.User
