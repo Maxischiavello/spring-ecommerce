@@ -37,7 +37,7 @@ public class UserDetailsServiceImp implements UserDetailsService {
             return org.springframework.security.core.userdetails.User
                     .builder()
                     .username(user.getUsername())
-                    .password(bCrypt.encode(user.getPassword()))
+                    .password(user.getPassword())
                     .roles(user.getType())
                     .build();
         } else {

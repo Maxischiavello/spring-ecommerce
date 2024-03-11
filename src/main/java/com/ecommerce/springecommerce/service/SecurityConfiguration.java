@@ -28,8 +28,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http.csrf().disable().authorizeRequests()
                 .antMatchers("/admin/**").hasRole("ADMIN")
                 .antMatchers("/products/**").hasRole("ADMIN")
-                .and().formLogin().loginPage("/user/login_form")
-                .permitAll().defaultSuccessUrl("/user/login");
+                .and().formLogin().loginPage("/user/login")
+                .permitAll().defaultSuccessUrl("/user/log_in");
     }
 
     @Bean

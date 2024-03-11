@@ -48,13 +48,13 @@ public class UserController {
         return "redirect:/";
     }
 
-    @GetMapping("/login_form")
+    @GetMapping("/login")
     public String loginForm() {
         return "user/login";
     }
 
-    @GetMapping("/login")
-    public String login(User user, HttpSession session) {
+    @GetMapping("/log_in")
+    public String login(HttpSession session) {
         Optional<User> loggedInUser;
         loggedInUser = userService.findById(Integer.parseInt(session.getAttribute("userId").toString()));
 
@@ -62,7 +62,10 @@ public class UserController {
             session.setAttribute("userId", loggedInUser.get().getId());
             if (loggedInUser.get().getType().equals("ADMIN")) {
                 LOGGER.info("User type: {}", loggedInUser.get().getType());
-                return "redirect:/admin";
+                return "redirect:/";
+            } else {
+                LOGGER.info("User type: {}", loggedInUser.get().getType());
+                return "redirect:/";
             }
         } else {
             LOGGER.error("User not found");
